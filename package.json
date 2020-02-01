@@ -1,0 +1,20 @@
+{
+  "name": "ncounter",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server --open"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "svelte": "^3.4.1",
+    "svelte-loader": "^2.13.4",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1"
+  }
+}
