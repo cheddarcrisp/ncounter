@@ -10,6 +10,7 @@ module.exports = {
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'NCounter',
+            meta: {viewport: 'width=device-width, initial-scale=1.0'}
         }),
         new GoogleFontsPlugin({
             fonts: [
