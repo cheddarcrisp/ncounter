@@ -20,6 +20,7 @@ module.exports = {
         }),
         new ServiceWorkerWebpackPlugin({
             entry: path.join(__dirname, 'src/sw.js'),
+            publicPath: './'
         })
     ],
     output: {

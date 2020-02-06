@@ -19,7 +19,6 @@
 <script>
 import Counter from './Counter.svelte';
 import { counters } from './db.js';
-import './site.css';
 
 let showAddDialog = false;
 
@@ -54,6 +53,10 @@ function add(){
 </script>
 <style>
     .add {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         position: fixed;
         bottom: 15px;
         right: 15px;
@@ -87,6 +90,6 @@ function add(){
     }
 
     .app {
-        margin-bottom: 60px;
+        padding: 5px 5px 60px 5px;
     }
 </style>
