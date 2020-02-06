@@ -1,6 +1,6 @@
 <div class="app">
-{#each counters as counter}
-<Counter counter={ counter } on:save={() => { save(counter); } }></Counter>
+{#each $counters as counter}
+<Counter counterId={ counter.id }></Counter>
 {/each}
 </div>
 <button class="add" on:click="{ showAdd }"><i class="material-icons">add</i></button>
@@ -12,37 +12,18 @@
         <label>Target: <input type="number" bind:value={newCounter.max} /></label>
         <label>Click counter: <input type="checkbox" bind:value={newCounter.isClickCounter} /></label>
         <button on:click={ () => { showAddDialog = false; } }>Cancel</button>
-        <button class="ok" on:click={ addCounter }>OK</button>
+        <button class="ok" on:click={ add }>OK</button>
     </div>
 </div>
 {/if}
 <script>
 import Counter from './Counter.svelte';
+import { counters } from './db.js';
+import './site.css';
 
 let showAddDialog = false;
 
 let newCounter = null;
-
-let counters = [
-    {
-        title: 'Test 1',
-        value: 0
-    },
-    {
-        title: 'Test 2',
-        value: 10
-    },
-    {
-        title: 'Max Test',
-        value: 0,
-        max: 100
-    },
-    {
-        title: 'Click Test',
-        value: 0,
-        isClickCounter: true
-    }
-];
 
 function focus(node){
     node.focus();
@@ -56,7 +37,8 @@ function showAdd(){
     newCounter = {
         title: '',
         value: 0,
-        isClickCounter: false
+        isClickCounter: false,
+        history: []
     }
 
     console.log({ newCounter });
@@ -64,8 +46,8 @@ function showAdd(){
     showAddDialog = true;
 }
 
-function addCounter(){
-    counters = [...counters, newCounter];
+function add(){
+    counters.add(newCounter);
 
     showAddDialog = false;
 }

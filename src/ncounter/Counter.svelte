@@ -8,8 +8,10 @@
         {#if !counter.isClickCounter}
         <button on:click={ () => { showIncrement = true; } }><i class="material-icons">add</i></button>
         {/if}
+        <span class="message">{ message }</span>
         <button class="reset" on:click={ reset }><i class="material-icons">undo</i></button>
         <button on:click={ save }><i class="material-icons">save</i></button>
+        <button on:click={ remove }><i class="material-icons">delete</i></button>
     </div>
     {#if showIncrement}
     <div class="dialog">
@@ -25,20 +27,43 @@
 import MyProgress from './MyProgress.svelte';
 import { tick } from 'svelte';
 import { createEventDispatcher } from 'svelte';
+import { counters } from './db.js';
 
 const dispatch = createEventDispatcher();
 
-export let counter;
+export let counterId;
+
+$: counter = $counters.find(x => x.id == counterId);
 
 let incrementValue;
 let showIncrement;
+let message = '';
+
+const formatter = new Intl.DateTimeFormat('en-US',
+        {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric'
+        });
 
 function focus(node){
     node.focus();
 }
 
+function update(newCounter){
+    counters.update(newCounter);
+}
+
 function increment(){
-    counter.value += incrementValue;
+    const newCounter = {
+        ...counter,
+        value: counter.value + incrementValue
+    }
+
+    update(newCounter);
+    
     showIncrement = false;
     incrementValue = null;
 }
@@ -46,22 +71,52 @@ function increment(){
 function reset(e){
     e.stopPropagation();
 
-    if(confirm(`Reset ${counter.title}?`))
-        counter.value = 0;
+    if(confirm(`Reset ${counter.title}?`)){
+        const newCounter = {
+            ...counter,
+            value: 0
+        }
+
+        update(newCounter);
+    }
 }
 
 function save(e) {
     e.stopPropagation();
 
-    dispatch('save');
-    counter.value = 0;
+    const time = new Date();
+
+    const data = {
+        time,
+        value: counter.value
+    }
+
+    const newCounter = {
+        ...counter,
+        history: [...counter.history, data]
+    }
+
+    message = `Saved ${data.value} at ${formatter.format(data.time)}`;
+    setTimeout(() => message = '', 5000);
+
+    update(newCounter);
+}
+
+function remove(){
+    if(confirm(`Remove ${counter.title}?`))
+        counters.remove(counter);
 }
 
 function clickCount() {
     if(!counter.isClickCounter)
         return;
 
-    counter.value++;
+    const newCounter = {
+        ...counter,
+        value: counter.value + 1
+    }
+
+    update(newCounter);
 }
 </script>
 <style>
@@ -79,8 +134,9 @@ function clickCount() {
     display: flex;
 }
 
-.reset {
-    margin-left: auto;
+.message {
+    flex: 1;
+    text-align: center;
 }
 
 header {
