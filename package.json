@@ -1,0 +1,34 @@
+{
+  "name": "ncounter",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.prod.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@beyonk/google-fonts-webpack-plugin": "^1.2.3",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.4.2",
+    "google-fonts-webpack-plugin": "^0.4.4",
+    "html-webpack-plugin": "^3.2.0",
+    "idb-keyval": "^3.2.0",
+    "serviceworker-webpack-plugin": "^1.0.1",
+    "style-loader": "^1.1.3",
+    "svelte": "^3.4.1",
+    "svelte-loader": "^2.13.4",
+    "uuid": "^3.4.0",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1",
+    "webpack-merge": "^4.2.2",
+    "workbox-cacheable-response": "^5.0.0",
+    "workbox-expiration": "^5.0.0",
+    "workbox-routing": "^5.0.0",
+    "workbox-strategies": "^5.0.0"
+  }
+}
