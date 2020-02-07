@@ -40,8 +40,6 @@ function showAdd(){
         history: []
     }
 
-    console.log({ newCounter });
-
     showAddDialog = true;
 }
 
