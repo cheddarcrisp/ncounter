@@ -7,18 +7,20 @@
     <div class="controls">
         {#if !counter.isClickCounter}
         <button on:click={ () => { showIncrement = true; } }><i class="material-icons">add</i></button>
+        <button on:click={ () => { showSet = true; } }><i class="material-icons">create</i></button>
         {/if}
         <span class="message">{ message }</span>
         <button class="reset" on:click={ reset }><i class="material-icons">undo</i></button>
         <button on:click={ save }><i class="material-icons">save</i></button>
         <button on:click={ remove }><i class="material-icons">delete</i></button>
     </div>
-    {#if showIncrement}
+    {#if showDialog}
     <div class="dialog">
         <div class="dialog-content">
-            <input class="increment-value" type="number" bind:value={ incrementValue } use:focus />
-            <button on:click={ () => { showIncrement = false; } }>Cancel</button>
-            <button class="ok" on:click={ increment }>OK</button>
+            <h1>{ showIncrement ? "Add" : "Set" }</h1>
+            <input class="dialog-value" type="number" bind:value={ dialogValue } use:focus />
+            <button on:click={ dialogCancel }>Cancel</button>
+            <button class="ok" on:click={ dialogDone }>OK</button>
         </div>
     </div>
     {/if}        
@@ -35,9 +37,12 @@ export let counterId;
 
 $: counter = $counters.find(x => x.id == counterId);
 
-let incrementValue;
+let dialogValue;
 let showIncrement;
+let showSet;
 let message = '';
+
+$: showDialog = showIncrement || showSet;
 
 const formatter = new Intl.DateTimeFormat('en-US',
         {
@@ -56,16 +61,25 @@ function update(newCounter){
     counters.update(newCounter);
 }
 
-function increment(){
-    const newCounter = {
+function dialogCancel(){
+    showIncrement = false;
+    showSet = false;
+}
+
+function dialogDone(){
+    const newCounter = showIncrement ? {
         ...counter,
-        value: counter.value + incrementValue
+        value: counter.value + dialogValue
+    } : {
+        ...counter,
+        value: dialogValue
     }
 
     update(newCounter);
     
     showIncrement = false;
-    incrementValue = null;
+    showSet = false;
+    dialogValue = null;
 }
 
 function reset(e){
@@ -151,7 +165,7 @@ header {
     margin-left: 0;
 }
 
-.increment-value {
+.dialog-value {
     width: 100%;
     margin: 5px 0;
 }
