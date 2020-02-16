@@ -1,8 +1,8 @@
 <div class="app">
+<button class="add" on:click="{ showAdd }"><i class="material-icons">add</i></button>
 {#each $counters as counter}
 <Counter counterId={ counter.id }></Counter>
 {/each}
-<button class="add" on:click="{ showAdd }"><i class="material-icons">add</i></button>
 </div>
 {#if showAddDialog}
 <div class="dialog">
