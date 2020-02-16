@@ -129,15 +129,23 @@ function close(){
         margin-left: auto;
     }
 
+    .history {
+        width: 100%;
+    }
+
     .history th {
         font-weight: 600;
         position: sticky;
-        background-color: white;
+        background-color: #CDCDCD;
         top: 0;
+        text-align: left;
     }
 
-    .history th, .history td {
-        border: 1px solid black;
+    .history tr:nth-child(even){
+        background-color: #F0F0F0;
+    }
+
+    .history td, .history th {
         padding: 5px;
     }
 </style>
