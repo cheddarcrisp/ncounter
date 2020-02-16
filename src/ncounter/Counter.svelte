@@ -1,20 +1,17 @@
-<div class="counter" on:click="{ clickCount }">
+<div class="counter">
     <header>{ counter.title }</header>
     <span class="value">{ counter.value }</span>
     {#if counter.max}
     <MyProgress value={ counter.value } max={ counter.max }></MyProgress>
     {/if}
     <div class="controls">
-        {#if !counter.isClickCounter}
         <button on:click={ () => { showIncrement = true; } }><i class="material-icons">add</i></button>
-        <button on:click={ () => { showSet = true; } }><i class="material-icons">create</i></button>
-        {/if}
-        <span class="message">{ message }</span>
+        <button on:click={ () => { showSet = true; } }><i class="material-icons">edit</i></button>
         <button class="reset" on:click={ reset }><i class="material-icons">undo</i></button>
-        <button on:click={ save }><i class="material-icons">save</i></button>
+        <button on:click={ startEdit }><i class="material-icons">edit</i></button>
         <button on:click={ remove }><i class="material-icons">delete</i></button>
     </div>
-    {#if showDialog}
+    {#if showValueDialog}
     <div class="dialog">
         <div class="dialog-content">
             <h1>{ showIncrement ? "Add" : "Set" }</h1>
@@ -23,7 +20,19 @@
             <button class="ok" on:click={ dialogDone }>OK</button>
         </div>
     </div>
-    {/if}        
+    {/if}
+    {#if showEditDialog}
+    <div class="dialog">
+        <div class="dialog-content">
+            <label>Name: <input type="text" bind:value={editingCounter.title} use:focus/></label>
+            <label>Initial Value: <input type="number" bind:value={editingCounter.initialValue} /></label>
+            <label>Target: <input type="number" bind:value={editingCounter.max} /></label>
+            <label>Save history: <input type="checkbox" bind:checked={editingCounter.saveHistory} /></label>
+            <button on:click={ () => { showEditDialog = false; } }>Cancel</button>
+            <button class="ok" on:click={ finishEdit }>OK</button>
+        </div>
+    </div>
+    {/if}
 </div>
 <script>
 import MyProgress from './MyProgress.svelte';
@@ -40,18 +49,10 @@ $: counter = $counters.find(x => x.id == counterId);
 let dialogValue;
 let showIncrement;
 let showSet;
-let message = '';
+let showEditDialog;
+let editingCounter;
 
-$: showDialog = showIncrement || showSet;
-
-const formatter = new Intl.DateTimeFormat('en-US',
-        {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric'
-        });
+$: showValueDialog = showIncrement || showSet;
 
 function focus(node){
     node.focus();
@@ -59,6 +60,18 @@ function focus(node){
 
 function update(newCounter){
     counters.update(newCounter);
+}
+
+function startEdit(e){
+    e.stopPropagation();
+
+    editingCounter = {...counter};
+    showEditDialog = true;
+}
+
+function finishEdit(){
+    update(editingCounter);
+    showEditDialog = false;
 }
 
 function dialogCancel(){
@@ -88,32 +101,11 @@ function reset(e){
     if(confirm(`Reset ${counter.title}?`)){
         const newCounter = {
             ...counter,
-            value: 0
+            value: counter.initialValue
         }
 
         update(newCounter);
     }
-}
-
-function save(e) {
-    e.stopPropagation();
-
-    const time = new Date();
-
-    const data = {
-        time,
-        value: counter.value
-    }
-
-    const newCounter = {
-        ...counter,
-        history: [...counter.history, data]
-    }
-
-    message = `Saved ${data.value} at ${formatter.format(data.time)}`;
-    setTimeout(() => message = '', 5000);
-
-    update(newCounter);
 }
 
 function remove(){
@@ -121,17 +113,6 @@ function remove(){
         counters.remove(counter);
 }
 
-function clickCount() {
-    if(!counter.isClickCounter)
-        return;
-
-    const newCounter = {
-        ...counter,
-        value: counter.value + 1
-    }
-
-    update(newCounter);
-}
 </script>
 <style>
 .counter{
@@ -148,11 +129,6 @@ function clickCount() {
     display: flex;
 }
 
-.message {
-    flex: 1;
-    text-align: center;
-}
-
 header {
     font-size: 22px;
     font-weight: 600;
@@ -163,6 +139,10 @@ header {
     font-size: 18px;
     font-weight: 500;
     margin-left: 0;
+}
+
+.reset {
+    margin-left: auto;
 }
 
 .dialog-value {

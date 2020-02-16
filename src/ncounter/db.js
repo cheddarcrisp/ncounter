@@ -6,12 +6,36 @@ function createCounters(){
     const {subscribe,set,update:updateVal} = writable([]);
 
     getDb('counters').then(counters => {
-        if(counters)
-            set(counters);
+        if(counters) {
+            const updatedCounters = counters.map(counter => {
+                return { 
+                    initialValue: 0,
+                    showHistory: false,
+                    ...counter
+                }
+            });
+
+            set(updatedCounters);
+        }
     });
+
+    function updateHistory(counter){
+        if(counter.saveHistory){
+            const time = new Date();
+
+            const data = {
+                time,
+                value: counter.value
+            };
+            
+            counter.history = [...counter.history, data];
+        }
+    }
 
     function add(counter){
         const newCounter = { id: uuid(), ...counter };
+
+        updateHistory(newCounter);
 
         updateVal(counters => {
             const newCounters = [...counters, newCounter];
@@ -23,6 +47,8 @@ function createCounters(){
     }
 
     function update(counter){
+        updateHistory(counter);
+        
         updateVal(counters => {
             const counterIndex = counters.findIndex(x => x.id == counter.id);
 
