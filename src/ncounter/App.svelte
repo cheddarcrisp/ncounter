@@ -8,9 +8,9 @@
 <div class="dialog">
     <div class="dialog-content">
         <label>Name: <input type="text" bind:value={newCounter.title} use:focus/></label>
-        <label>Initial Value: <input type="number" bind:value={newCounter.value} /></label>
+        <label>Initial Value: <input type="number" bind:value={newCounter.initialValue} /></label>
         <label>Target: <input type="number" bind:value={newCounter.max} /></label>
-        <label>Click counter: <input type="checkbox" bind:value={newCounter.isClickCounter} /></label>
+        <label>Save history: <input type="checkbox" bind:checked={newCounter.saveHistory} /></label>
         <button on:click={ () => { showAddDialog = false; } }>Cancel</button>
         <button class="ok" on:click={ add }>OK</button>
     </div>
@@ -28,15 +28,11 @@ function focus(node){
     node.focus();
 }
 
-function save(counter){
-    alert('Save ' + counter.title);
-}
-
 function showAdd(){
     newCounter = {
         title: '',
-        value: 0,
-        isClickCounter: false,
+        initialValue: 0,
+        saveHistory: false,
         history: []
     }
 
@@ -44,7 +40,12 @@ function showAdd(){
 }
 
 function add(){
-    counters.add(newCounter);
+    const counter = {
+        ...newCounter,
+        value: newCounter.initialValue
+    }
+
+    counters.add(counter);
 
     showAddDialog = false;
 }
@@ -65,16 +66,6 @@ function add(){
         width: 40px;
         height: 40px;
         color: white;
-    }
-
-    .dialog-content > label {
-        display: flex;
-        width: 100%;
-        margin-bottom: 5px;
-    }
-
-    .dialog-content > label > input {
-        margin-left: auto;
     }
 
     .ok {
