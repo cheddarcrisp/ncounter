@@ -70,6 +70,12 @@ button {
     margin-left: auto;
 }
 
+.dialog-content button {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
 input[type="text"],
 input[type="number"] {
     font-size: 16px;

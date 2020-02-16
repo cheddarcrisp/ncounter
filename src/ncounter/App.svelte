@@ -2,8 +2,8 @@
 {#each $counters as counter}
 <Counter counterId={ counter.id }></Counter>
 {/each}
-</div>
 <button class="add" on:click="{ showAdd }"><i class="material-icons">add</i></button>
+</div>
 {#if showAddDialog}
 <div class="dialog">
     <div class="dialog-content">
@@ -60,6 +60,8 @@ function add(){
         bottom: 15px;
         right: 15px;
 
+        z-index: 2;
+
         background-color: #90C090;
         border-radius: 50%;
 
@@ -72,13 +74,16 @@ function add(){
         margin-left: auto;
     }
 
-    .dialog-content button {
-        padding: 10px;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
     .app {
-        padding: 5px 5px 60px 5px;
+        padding: 5px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        z-index: 1;
+
+        overflow: auto;
     }
 </style>

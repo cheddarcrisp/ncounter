@@ -7,8 +7,11 @@
     <div class="controls">
         <button on:click={ () => { showIncrement = true; } }><i class="material-icons">add</i></button>
         <button on:click={ () => { showSet = true; } }><i class="material-icons">edit</i></button>
-        <button class="reset" on:click={ reset }><i class="material-icons">undo</i></button>
-        <button on:click={ startEdit }><i class="material-icons">edit</i></button>
+        <button class="reset" on:click={ reset }><i class="material-icons">replay</i></button>
+        {#if counter.saveHistory}
+        <button class="history" on:click={ () => { showHistory = true; } }><i class="material-icons">show_chart</i></button>
+        {/if}
+        <button on:click={ startEdit }><i class="material-icons">settings</i></button>
         <button on:click={ remove }><i class="material-icons">delete</i></button>
     </div>
     {#if showValueDialog}
@@ -33,14 +36,15 @@
         </div>
     </div>
     {/if}
+    {#if showHistory}
+    <History { counterId } on:close={ () => { showHistory = false; } }></History>
+    {/if}
 </div>
 <script>
 import MyProgress from './MyProgress.svelte';
+import History from './History.svelte';
 import { tick } from 'svelte';
-import { createEventDispatcher } from 'svelte';
 import { counters } from './db.js';
-
-const dispatch = createEventDispatcher();
 
 export let counterId;
 
@@ -51,6 +55,7 @@ let showIncrement;
 let showSet;
 let showEditDialog;
 let editingCounter;
+let showHistory;
 
 $: showValueDialog = showIncrement || showSet;
 
@@ -125,6 +130,10 @@ function remove(){
     padding: 5px;
 }
 
+.counter:last-child {
+    margin-bottom: 72px;
+}
+
 .controls {
     display: flex;
 }
@@ -142,7 +151,15 @@ header {
 }
 
 .reset {
+    margin-left: 24px;
+}
+
+.reset + button {
     margin-left: auto;
+}
+
+.history {
+    margin-right: 24px;
 }
 
 .dialog-value {
@@ -152,11 +169,5 @@ header {
 
 .ok {
     margin-left: auto;
-}
-
-.dialog-content button {
-    padding: 10px;
-    font-size: 14px;
-    font-weight: 600;
 }
 </style>
