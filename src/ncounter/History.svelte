@@ -113,6 +113,7 @@ function close(){
 
     header {
         display: flex;
+        flex: none;
     }
 
     header h1 {
