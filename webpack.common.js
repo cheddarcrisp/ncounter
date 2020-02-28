@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+const LicensePlugin = require('webpack-license-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -21,7 +22,8 @@ module.exports = {
         new ServiceWorkerWebpackPlugin({
             entry: path.join(__dirname, 'src/sw.js'),
             publicPath: './'
-        })
+        }),
+        new LicensePlugin()
     ],
     output: {
         filename: 'index.js',
@@ -32,7 +34,18 @@ module.exports = {
             {
                 test: /\.svelte$/,
                 exclude: /node_modules/,
-                loader: 'svelte-loader'
+                use: [
+                    'svelte-loader',
+                    {
+                        loader: 'string-replace-loader',
+                        options: {
+                            multiple: [
+                                { search: '|BUILD_YEAR|', replace: '2020' },
+                                { search: '|BUILD_DATE|', replace: '2020-02-28'}
+                            ]
+                        }
+                    }
+                ]
             },
             {
                 test: /\.css$/,

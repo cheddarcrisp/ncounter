@@ -1,27 +1,36 @@
 <div class="app">
-<button class="add" on:click="{ showAdd }"><i class="material-icons">add</i></button>
-{#each $counters as counter}
-<Counter counterId={ counter.id }></Counter>
-{/each}
+    <div class="counter-list">
+        {#each $counters as counter}
+        <Counter counterId={ counter.id }></Counter>
+        {/each}
+    </div>
+    <div class="tool-bar">
+        <button class="add" on:click="{ showAdd }"><i class="material-icons">add</i></button>
+        <button class="about" on:click="{ () => { showAbout = true; } }">?</button>
+    </div>
 </div>
 {#if showAddDialog}
 <div class="dialog">
     <div class="dialog-content">
-        <label>Name: <input type="text" bind:value={newCounter.title} use:focus/></label>
-        <label>Initial Value: <input type="number" bind:value={newCounter.initialValue} /></label>
-        <label>Target: <input type="number" bind:value={newCounter.max} /></label>
-        <label>Save history: <input type="checkbox" bind:checked={newCounter.saveHistory} /></label>
+        <label>Name<input type="text" bind:value={newCounter.title} use:focus/></label>
+        <label>Initial Value<input type="number" bind:value={newCounter.initialValue} /></label>
+        <label>Target<input type="number" bind:value={newCounter.max} /></label>
+        <label>Save history<input type="checkbox" bind:checked={newCounter.saveHistory} /></label>
         <button on:click={ () => { showAddDialog = false; } }>Cancel</button>
         <button class="ok" on:click={ add }>OK</button>
     </div>
 </div>
 {/if}
+{#if showAbout}
+<About on:close="{ () => { showAbout = false; } }"></About>
+{/if}
 <script>
+import About from './About.svelte';
 import Counter from './Counter.svelte';
 import { counters } from './db.js';
 
 let showAddDialog = false;
-
+let showAbout = false;
 let newCounter = null;
 
 function focus(node){
@@ -50,34 +59,16 @@ function add(){
     showAddDialog = false;
 }
 </script>
-<style>
-    .add {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        position: fixed;
-        bottom: 15px;
-        right: 15px;
-
-        z-index: 2;
-
-        background-color: #90C090;
-        border-radius: 50%;
-    
-        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-
-        width: 40px;
-        height: 40px;
-        color: white;
-    }
-
+<style lang="scss">
     .ok {
         margin-left: auto;
     }
 
     .app {
-        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
         position: fixed;
         top: 0;
         right: 0;
@@ -85,7 +76,35 @@ function add(){
         left: 0;
 
         z-index: 1;
+    }
 
+    .counter-list {
+        padding: 5px;
         overflow: auto;
+        flex: 1 0 0;
+
+        background-color: #8baec6;
+    }
+
+    .tool-bar {
+        flex: none;
+
+        display: flex;
+
+        border-top: 2px solid #3A86B7;
+    }
+
+    .tool-bar > button {
+        background-color: #3A86B7;
+        color: white;
+    }
+
+    .tool-bar > button:focus, .tool-bar > button:hover {
+        border: 2px solid #303030;
+    }
+
+    .about {
+        margin-left: auto;
+        font-size: 20px;
     }
 </style>
