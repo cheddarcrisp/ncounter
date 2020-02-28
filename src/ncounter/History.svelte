@@ -107,8 +107,6 @@ function close(){
         display: flex;
         flex-direction: column;
         align-items: stretch;
-
-        overflow: auto;
     }
 
     header {
@@ -124,6 +122,8 @@ function close(){
 
     .table-container {
         position: relative;
+
+        overflow: auto;
     }
 
     .close {
