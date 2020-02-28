@@ -1,7 +1,7 @@
 <div>
     {#each licenses as license}
     <header>
-        <h1>{license.name} by {license.author}</h1>
+        <h1>{license.name}{#if license.author}&nbsp;by {license.author}{/if}</h1>
         <div>Source: <a href="{license.repository}" target="_blank">{license.repository}</a></div>
     </header>
     <pre>{license.licenseText}</pre>
@@ -35,5 +35,6 @@ pre {
     padding: 5px;
     white-space: pre-wrap;
     background-color: #F0F0F0;
+    overflow-wrap: break-word;
 }
 </style>
