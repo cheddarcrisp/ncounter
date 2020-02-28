@@ -27,10 +27,10 @@
     {#if showEditDialog}
     <div class="dialog">
         <div class="dialog-content">
-            <label>Name: <input type="text" bind:value={editingCounter.title} use:focus/></label>
-            <label>Initial Value: <input type="number" bind:value={editingCounter.initialValue} /></label>
-            <label>Target: <input type="number" bind:value={editingCounter.max} /></label>
-            <label>Save history: <input type="checkbox" bind:checked={editingCounter.saveHistory} /></label>
+            <label>Name<input type="text" bind:value={editingCounter.title} use:focus/></label>
+            <label>Initial Value<input type="number" bind:value={editingCounter.initialValue} /></label>
+            <label>Target<input type="number" bind:value={editingCounter.max} /></label>
+            <label>Save history<input type="checkbox" bind:checked={editingCounter.saveHistory} /></label>
             <button on:click={ () => { showEditDialog = false; } }>Cancel</button>
             <button class="ok" on:click={ finishEdit }>OK</button>
         </div>
@@ -122,16 +122,15 @@ function remove(){
 <style>
 .counter{
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    margin-bottom: 12px;
+
+    background-color: #FCFCFC;
+
+    margin-bottom: 4px;
 
     display: flex;
     flex-direction: column;
 
     padding: 5px;
-}
-
-.counter:last-child {
-    margin-bottom: 72px;
 }
 
 .controls {
@@ -151,7 +150,7 @@ header {
 }
 
 .reset {
-    margin-left: 24px;
+    margin-left: 12px;
 }
 
 .reset + button {
@@ -159,7 +158,7 @@ header {
 }
 
 .history {
-    margin-right: 24px;
+    margin-right: 12px;
 }
 
 .dialog-value {
