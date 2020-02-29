@@ -86,7 +86,7 @@ button:focus, button:hover {
     margin-left: auto;
 }
 
-.dialog-content input[type='text'], .dialog-content input[type='number'] {
+.dialog-content > label > input[type='text'], .dialog-content > label > input[type='number'] {
     width: 175px;
 }
 
@@ -101,6 +101,10 @@ button:focus, button:hover {
 .dialog-content button:focus, .dialog-content button:hover {
     border: 0;
     outline: 2px solid #3A86B7;
+}
+
+.dialog-content h1 {
+    font-weight: 600;
 }
 
 input[type="text"],
