@@ -19,7 +19,7 @@ const dispatch = createEventDispatcher();
 .about {
     background-color: var(--background-primary);
     color: var(--text-primary);
-    
+
     position: fixed;
     top: 0;
     right: 0;
@@ -56,8 +56,8 @@ h2 {
 
 .close {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 0;
+    right: 0;
 }
 
 .licenses {
