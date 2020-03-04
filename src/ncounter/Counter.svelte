@@ -18,7 +18,7 @@
     <div class="dialog">
         <div class="dialog-content">
             <h1>{ showIncrement ? "Add" : "Set" }</h1>
-            <input class="dialog-value" type="number" inputmode="decimal" bind:value={ dialogValue } use:focus />
+            <input class="dialog-value" type="text" inputmode="decimal" bind:value={ dialogValue } use:focus />
             <button on:click={ dialogCancel }>Cancel</button>
             <button class="ok" on:click={ dialogDone }>OK</button>
         </div>
@@ -28,8 +28,8 @@
     <div class="dialog">
         <div class="dialog-content">
             <label>Name<input type="text" bind:value={editingCounter.title} use:focus/></label>
-            <label>Initial Value<input type="number" inputmode="decimal" bind:value={editingCounter.initialValue} /></label>
-            <label>Target<input type="number" inputmode="decimal" bind:value={editingCounter.max} /></label>
+            <label>Initial Value<input type="text" inputmode="decimal" bind:value={editingCounter.initialValue} /></label>
+            <label>Target<input type="text" inputmode="decimal" bind:value={editingCounter.max} /></label>
             <label>Save history<input type="checkbox" bind:checked={editingCounter.saveHistory} /></label>
             <button on:click={ () => { showEditDialog = false; } }>Cancel</button>
             <button class="ok" on:click={ finishEdit }>OK</button>
@@ -50,7 +50,7 @@ export let counterId;
 
 $: counter = $counters.find(x => x.id == counterId);
 
-let dialogValue;
+let dialogValue = null;
 let showIncrement;
 let showSet;
 let showEditDialog;

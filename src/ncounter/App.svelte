@@ -13,8 +13,8 @@
 <div class="dialog">
     <div class="dialog-content">
         <label>Name<input type="text" bind:value={newCounter.title} use:focus/></label>
-        <label>Initial Value<input type="number" inputmode="decimal" bind:value={newCounter.initialValue} /></label>
-        <label>Target<input type="number" inputmode="decimal" bind:value={newCounter.max} /></label>
+        <label>Initial Value<input type="text" inputmode="decimal" bind:value={newCounter.initialValue} /></label>
+        <label>Target<input type="text" inputmode="decimal" bind:value={newCounter.max} /></label>
         <label>Save history<input type="checkbox" bind:checked={newCounter.saveHistory} /></label>
         <button on:click={ () => { showAddDialog = false; } }>Cancel</button>
         <button class="ok" on:click={ add }>OK</button>
