@@ -5,6 +5,10 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const LicensePlugin = require('webpack-license-plugin');
 
+const now = new Date();
+const year = now.getFullYear();
+const releaseDate = now.getFullYear() + "-" + (now.getMonth() + 1).toString().padStart(2, '0') + "-" + now.getDate().toString().padStart(2, '0');
+
 module.exports = {
     entry: './src/index.js',
     plugins: [
@@ -40,8 +44,8 @@ module.exports = {
                         loader: 'string-replace-loader',
                         options: {
                             multiple: [
-                                { search: '|BUILD_YEAR|', replace: '2020' },
-                                { search: '|BUILD_DATE|', replace: '2020-02-28'}
+                                { search: '|BUILD_YEAR|', replace: year },
+                                { search: '|BUILD_DATE|', replace: releaseDate}
                             ]
                         }
                     }
