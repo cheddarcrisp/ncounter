@@ -14,8 +14,10 @@ $: style = `width: ${(Math.min(1, value / max) * 100)}%`;
 
 		margin: 3px 0;
 
-		background-color: #F0F0F0;
-		border: 1px solid black;
+		background-color: var(--background-primary);
+		color: var(--text-primary);
+
+		border: 1px solid var(--text-primary);
 		height: 20px;
 
 		position: relative;
@@ -23,7 +25,7 @@ $: style = `width: ${(Math.min(1, value / max) * 100)}%`;
 
 	.progress-bar > .progress {
 		display: block;
-		background-color: #C0CFC0;
+		background-color: var(--background-color);
 		height: 100%;
 	}
 

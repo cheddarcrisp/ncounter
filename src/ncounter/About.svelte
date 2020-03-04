@@ -17,7 +17,9 @@ const dispatch = createEventDispatcher();
 </script>
 <style>
 .about {
-    background-color: white;
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+    
     position: fixed;
     top: 0;
     right: 0;
