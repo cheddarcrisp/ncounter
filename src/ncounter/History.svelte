@@ -52,6 +52,7 @@ $: dataset = counter.history.reduce((acc, x) => {
         labels: [...acc.labels, x.time],
         datasets: [
             {
+                ...acc.datasets[0],
                 data: [...acc.datasets[0].data, x.value]
             }
         ]
@@ -60,6 +61,9 @@ $: dataset = counter.history.reduce((acc, x) => {
     labels: [],
     datasets: [
         {
+            borderColor: darkMode ? 'rgba(255, 255, 255, 0.25)' : undefined,
+            backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.25)' : undefined,
+            lineTension: 0.1,
             data: []
         }
     ]
@@ -69,8 +73,26 @@ export let counterId;
 
 let chartEl;
 
+const themeMatch = window.matchMedia('(prefers-color-scheme: dark)');
+let darkMode = themeMatch.matches;
+themeMatch.addListener((e) => {
+    darkMode = e.matches;
+});
+
 $: {
     if(chartEl){
+        const theme = darkMode ?
+            {
+                gridLines: {
+                    color: 'rgba(255, 255, 255, 0.1)',
+                    zeroLineColor: 'rgba(255, 255, 255, 0.25)'
+                },
+                ticks: {
+                    fontColor: '#FFFFFF'
+                }
+            } :
+            {} //Use defaults for light mode;
+
         new Chart(chartEl, {
             type: 'line',
             data: dataset,
@@ -78,7 +100,13 @@ $: {
                 scales: {
                     xAxes: [
                         {
+                            ...theme,
                             type: 'time'
+                        }
+                    ],
+                    yAxes: [
+                        {
+                            ...theme
                         }
                     ]
                 },
@@ -96,7 +124,9 @@ function close(){
 </script>
 <style>
     .history-container{
-        background-color: white;
+        background-color: var(--background-primary);
+        color: var(--text-primary);
+
         position: fixed;
         top: 0;
         right: 0;
@@ -137,13 +167,17 @@ function close(){
     .history th {
         font-weight: 600;
         position: sticky;
-        background-color: #CDCDCD;
+        background-color: var(--background-alternate);
         top: 0;
         text-align: left;
     }
 
-    .history tr:nth-child(even){
-        background-color: #F0F0F0;
+    .history tbody tr:nth-child(odd){
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .history tbody tr:nth-child(even){
+        background-color: rgba(0, 0, 0, 0.1);
     }
 
     .history td, .history th {

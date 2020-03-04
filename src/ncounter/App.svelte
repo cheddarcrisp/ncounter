@@ -83,7 +83,7 @@ function add(){
         overflow: auto;
         flex: 1 0 0;
 
-        background-color: #8baec6;
+        background-color: var(--background-color);
     }
 
     .tool-bar {
@@ -91,16 +91,18 @@ function add(){
 
         display: flex;
 
-        border-top: 2px solid #3A86B7;
+        border-top: 2px solid var(--button-color);
+        background-color: var(--background-primary);
+        color: var(--text-primary);
     }
 
     .tool-bar > button {
-        background-color: #3A86B7;
-        color: white;
+        background-color: var(--button-color);
+        color: var(--text-inverse);
     }
 
     .tool-bar > button:focus, .tool-bar > button:hover {
-        border: 2px solid #303030;
+        border: 2px solid var(--highlight-color);
     }
 
     .about {

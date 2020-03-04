@@ -34,7 +34,8 @@ pre {
     margin: 5px;
     padding: 5px;
     white-space: pre-wrap;
-    background-color: #F0F0F0;
+    background-color: var(--background-alternate);
+    color: var(--text-primary);
     overflow-wrap: break-word;
 }
 </style>
