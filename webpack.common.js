@@ -6,7 +6,7 @@ const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const LicensePlugin = require('webpack-license-plugin');
 
 const now = new Date();
-const year = now.getFullYear();
+const year = now.getFullYear().toString();
 const releaseDate = now.getFullYear() + "-" + (now.getMonth() + 1).toString().padStart(2, '0') + "-" + now.getDate().toString().padStart(2, '0');
 
 module.exports = {
