@@ -1,7 +1,7 @@
 <div class="counter">
     <header>{ counter.title }</header>
     <span class="value">{ counter.value }</span>
-    {#if counter.max}
+    {#if counter.max !== null}
     <MyProgress value={ counter.value } max={ counter.max }></MyProgress>
     {/if}
     <div class="controls">
@@ -16,24 +16,28 @@
     </div>
     {#if showValueDialog}
     <div class="dialog">
-        <div class="dialog-content">
+        <form class="dialog-content" novalidate bind:this={ dialogForm }>
             <h1>{ showIncrement ? "Add" : "Set" }</h1>
-            <input class="dialog-value" type="text" inputmode="decimal" bind:value={ dialogValue } use:focus />
-            <button on:click={ dialogCancel }>Cancel</button>
-            <button class="ok" on:click={ dialogDone }>OK</button>
-        </div>
+            <input class="dialog-value" type="text" required pattern="(0|([1-9]\d*))(\.\d+)?" inputmode="decimal" bind:value={ dialogValue } use:focus />
+            <div class="buttons">
+                <button class="ok" on:click|preventDefault={ dialogDone }>OK</button>
+                <button on:click|preventDefault={ dialogCancel }>Cancel</button>
+            </div>
+        </form>
     </div>
     {/if}
     {#if showEditDialog}
     <div class="dialog">
-        <div class="dialog-content">
-            <label>Name<input type="text" bind:value={editingCounter.title} use:focus/></label>
-            <label>Initial Value<input type="text" inputmode="decimal" bind:value={editingCounter.initialValue} /></label>
-            <label>Target<input type="text" inputmode="decimal" bind:value={editingCounter.max} /></label>
+        <form class="dialog-content" novalidate bind:this={ dialogForm }>
+            <label>Name<input type="text" required bind:value={editingCounter.title} use:focus/></label>
+            <label>Initial Value<input type="text" required pattern="(0|([1-9]\d*))(\.\d+)?" inputmode="decimal" bind:value={editingCounter.initialValue} /></label>
+            <label>Target<input type="text" pattern="(0|([1-9]\d*))(\.\d+)?" inputmode="decimal" bind:value={editingCounter.max} /></label>
             <label>Save history<input type="checkbox" bind:checked={editingCounter.saveHistory} /></label>
-            <button on:click={ () => { showEditDialog = false; } }>Cancel</button>
-            <button class="ok" on:click={ finishEdit }>OK</button>
-        </div>
+            <div class="buttons">
+                <button class="ok" on:click|preventDefault={ finishEdit }>OK</button>
+                <button on:click|preventDefault={ () => { showEditDialog = false; } }>Cancel</button>
+            </div>
+        </form>
     </div>
     {/if}
     {#if showHistory}
@@ -56,6 +60,7 @@ let showSet;
 let showEditDialog;
 let editingCounter;
 let showHistory;
+let dialogForm;
 
 $: showValueDialog = showIncrement || showSet;
 
@@ -68,14 +73,23 @@ function update(newCounter){
 }
 
 function startEdit(e){
-    e.stopPropagation();
-
-    editingCounter = {...counter};
+    editingCounter = { ...counter };
     showEditDialog = true;
 }
 
 function finishEdit(){
-    update(editingCounter);
+    if(!dialogForm.checkValidity()) {
+        dialogForm.removeAttribute('novalidate');
+        return;
+    }
+
+    const updatedCounter = {
+        ...editingCounter,
+        max: editingCounter.max !== null && editingCounter.max !== '' ? +editingCounter.max : null,
+        value: +editingCounter.value
+    }
+
+    update(updatedCounter);
     showEditDialog = false;
 }
 
@@ -85,12 +99,17 @@ function dialogCancel(){
 }
 
 function dialogDone(){
+    if(!dialogForm.checkValidity()) {
+        dialogForm.removeAttribute('novalidate');
+        return;
+    }
+
     const newCounter = showIncrement ? {
         ...counter,
-        value: counter.value + dialogValue
+        value: +counter.value + +dialogValue
     } : {
         ...counter,
-        value: dialogValue
+        value: +dialogValue
     }
 
     update(newCounter);
@@ -101,12 +120,10 @@ function dialogDone(){
 }
 
 function reset(e){
-    e.stopPropagation();
-
     if(confirm(`Reset ${counter.title}?`)){
         const newCounter = {
             ...counter,
-            value: counter.initialValue
+            value: +counter.initialValue
         }
 
         update(newCounter);
@@ -165,9 +182,5 @@ header {
 .dialog-value {
     width: 100%;
     margin: 5px 0;
-}
-
-.ok {
-    margin-left: auto;
 }
 </style>

@@ -125,6 +125,13 @@ button:focus, button:hover {
     width: auto;
 }
 
+.dialog-content .buttons {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .dialog-content button:focus, .dialog-content button:hover {
     border: 0;
     outline: 2px solid var(--button-color);
