@@ -22,6 +22,11 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* Button */
+button {
+    border-radius: 0; /* Because Edge is trying to be "cute" */
+}
+
 :root {
     --background-color: #DCE6EF;
     --button-color: #3A86B7;
