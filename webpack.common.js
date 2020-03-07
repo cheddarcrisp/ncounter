@@ -4,6 +4,7 @@ const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const LicensePlugin = require('webpack-license-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const now = new Date();
 const year = now.getFullYear().toString();
@@ -15,7 +16,7 @@ module.exports = {
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'NCounter',
-            meta: {viewport: 'width=device-width, initial-scale=1.0'}
+            template: 'src/index.html'
         }),
         new GoogleFontsPlugin({
             fonts: [
@@ -27,7 +28,19 @@ module.exports = {
             entry: path.join(__dirname, 'src/sw.js'),
             publicPath: './'
         }),
-        new LicensePlugin()
+        new LicensePlugin(),
+        new CopyWebpackPlugin(
+            [
+                'src/icon/*.png',
+                'src/icon/safari-pinned-tab.svg',
+                'src/icon/favicon.ico',
+                'src/icon/site.webmanifest',
+                'src/icon/browserconfig.xml'
+            ],
+            {
+                to: 'icons'
+            }
+        )
     ],
     output: {
         filename: 'index.js',
@@ -35,6 +48,13 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.html$/,
+                loader: 'html-loader',
+                options: {
+                    interpolate: true
+                }
+            },
             {
                 test: /\.svelte$/,
                 exclude: /node_modules/,
