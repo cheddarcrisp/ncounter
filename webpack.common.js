@@ -29,18 +29,23 @@ module.exports = {
             publicPath: './'
         }),
         new LicensePlugin(),
-        new CopyWebpackPlugin(
-            [
-                'src/icon/*.png',
-                'src/icon/safari-pinned-tab.svg',
-                'src/icon/favicon.ico',
-                'src/icon/site.webmanifest',
-                'src/icon/browserconfig.xml'
-            ],
+        new CopyWebpackPlugin([
             {
-                to: 'icons'
+                from: 'src/icon/*.png', to: 'icons', flatten: true
+            },
+            {
+                from: 'src/icon/safari-pinned-tab.svg', to: 'icons'
+            },
+            {
+                from: 'src/icon/favicon.ice', to: 'icons'
+            },
+            {
+                from: 'src/icon/site.webmanifest', to: 'icons'
+            },
+            {
+                from: 'src/icon/browserconfig.xml', to: 'icons'
             }
-        )
+        ])
     ],
     output: {
         filename: 'index.js',
