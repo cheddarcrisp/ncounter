@@ -17,8 +17,8 @@
         <label>Target<input type="text" pattern="(0|([1-9]\d*))(\.\d+)?" inputmode="decimal" bind:value={newCounter.max} /></label>
         <label>Save history<input type="checkbox" bind:checked={newCounter.saveHistory} /></label>
         <div class="buttons">
-            <button class="ok" on:click|preventDefault={ add }>OK</button>
-            <button on:click|preventDefault={ () => { showAddDialog = false; } }>Cancel</button>
+            <button class="ok" on:click|preventDefault|stopPropagation={ add }>OK</button>
+            <button on:click|preventDefault|stopPropagation={ () => { showAddDialog = false; } }>Cancel</button>
         </div>
     </form>
 </div>

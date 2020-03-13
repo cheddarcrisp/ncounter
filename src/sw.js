@@ -29,7 +29,7 @@ registerRoute(
 );
 
 registerRoute(
-    /\.(?:js|css)$/,
+    /\.(?:js|css|png)$/,
     new StaleWhileRevalidate({
       cacheName: 'static-resources',
     })
