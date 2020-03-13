@@ -20,8 +20,8 @@
             <h1>{ showIncrement ? "Add" : "Set" }</h1>
             <input class="dialog-value" type="text" required pattern="(0|([1-9]\d*))(\.\d+)?" inputmode="decimal" bind:value={ dialogValue } use:focus />
             <div class="buttons">
-                <button class="ok" on:click|preventDefault={ dialogDone }>OK</button>
-                <button on:click|preventDefault={ dialogCancel }>Cancel</button>
+                <button class="ok" on:click|preventDefault|stopPropagation={ dialogDone }>OK</button>
+                <button on:click|preventDefault|stopPropagation={ dialogCancel }>Cancel</button>
             </div>
         </form>
     </div>
