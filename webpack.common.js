@@ -37,7 +37,7 @@ module.exports = {
                 from: 'src/icon/safari-pinned-tab.svg', to: 'icons'
             },
             {
-                from: 'src/icon/favicon.ice', to: 'icons'
+                from: 'src/icon/favicon.ico', to: 'icons'
             },
             {
                 from: 'src/icon/site.webmanifest', to: 'icons'
@@ -82,6 +82,10 @@ module.exports = {
                     'style-loader',
                     'css-loader'
                 ]
+            },
+            {
+                test: /\.png$/,
+                loader: 'file-loader'
             }
         ]
     },
