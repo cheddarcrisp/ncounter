@@ -70,7 +70,14 @@ const dispatch = createEventDispatcher();
     border: 2px solid transparent;
 }
 
-.repo > a:hover, .repo > a:focus {
+@media (hover){
+    .repo > a:hover {
+        box-shadow: none;
+        border-color: var(--highlight-color);    
+    }
+}
+
+.repo > a:focus {
     box-shadow: none;
     border-color: var(--highlight-color);
 }
