@@ -107,7 +107,13 @@ function add(){
         color: var(--text-inverse);
     }
 
-    .tool-bar > button:focus, .tool-bar > button:hover {
+    @media(hover){
+        .tool-bar > button:hover {
+            border: 2px solid var(--highlight-color);
+        }
+    }
+
+    .tool-bar > button:focus {
         border: 2px solid var(--highlight-color);
     }
 
