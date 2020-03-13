@@ -70,7 +70,7 @@ const dispatch = createEventDispatcher();
     border: 2px solid transparent;
 }
 
-@media (hover){
+@media (hover:hover){
     .repo > a:hover {
         box-shadow: none;
         border-color: var(--highlight-color);    
