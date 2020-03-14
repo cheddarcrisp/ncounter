@@ -2,6 +2,7 @@ import {registerRoute,setDefaultHandler} from 'workbox-routing';
 import {CacheFirst, StaleWhileRevalidate, NetworkFirst} from 'workbox-strategies';
 import {CacheableResponsePlugin} from 'workbox-cacheable-response';
 import {ExpirationPlugin} from 'workbox-expiration';
+import {BroadcastUpdatePlugin} from 'workbox-broadcast-update';
 
 // Cache the Google Fonts stylesheets with a stale-while-revalidate strategy.
 registerRoute(
@@ -32,6 +33,9 @@ registerRoute(
     /\.(?:js|css|png)$/,
     new StaleWhileRevalidate({
       cacheName: 'static-resources',
+      plugins: [
+        new BroadcastUpdatePlugin(),
+      ],
     })
   );
 

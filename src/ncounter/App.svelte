@@ -4,8 +4,16 @@
         <Counter counterId={ counter.id }></Counter>
         {/each}
     </div>
+    {#if showUpdateMessage}
+    <div class="update-message">
+        An update is available. <button class="reload" on:click="{ () => { window.location.reload(); } }">Load now</button><button class="later" on:click="{ () => { showUpdateMessage = false; } }">Later</button>
+    </div>
+    {/if}
     <div class="tool-bar">
         <button class="add" on:click="{ showAdd }"><i class="material-icons">add</i></button>
+        {#if updateAvailable}<button class="update"
+            class:animate="{!ignoreUpdate}"
+            on:click={() => { ignoreUpdate = true; showUpdateMessage = !showUpdateMessage; }}><i class="material-icons">arrow_upward</i></button>{/if}
         <button class="about" on:click="{ () => { showAbout = true; } }">?</button>
     </div>
 </div>
@@ -35,6 +43,10 @@ let showAddDialog = false;
 let showAbout = false;
 let newCounter = null;
 let dialogForm = null;
+
+let updateAvailable = false;
+let ignoreUpdate = false;
+let showUpdateMessage = false;
 
 function focus(node){
     node.focus();
@@ -67,6 +79,10 @@ function add(){
     counters.add(counter);
 
     showAddDialog = false;
+}
+
+export function SetUpdateAvailable(){
+    updateAvailable = true;
 }
 </script>
 <style lang="scss">
@@ -117,8 +133,71 @@ function add(){
         border: 2px solid var(--highlight-color);
     }
 
+    .add {
+        margin-right: auto;
+    }
+
+    @keyframes pulse {
+        0% {
+            -webkit-text-stroke: 0 rgba(204, 204, 0, 0);
+        }
+
+        15% {
+            -webkit-text-stroke: 3px rgba(204, 204, 0, 1);
+        }
+
+        30% {
+            -webkit-text-stroke: 0 rgba(204, 204, 0, 0);
+        }
+    }
+
+    .update {
+        margin-right: 10px;
+    }
+
+    .update.animate {
+        animation-name: pulse;
+        animation-duration: 5s;
+        animation-iteration-count: infinite;
+    }
+
     .about {
-        margin-left: auto;
         font-size: 20px;
+    }
+
+    .update-message {
+        display: flex;
+        align-items: center;
+
+        padding: 12px;
+
+        background-color: var(--background-primary);
+        color: var(--text-primary);
+
+        box-shadow: 0 -1px 3px rgba(0,0,0,0.12), 0 -1px 2px rgba(0,0,0,0.24);
+    }
+
+    .update-message > button {
+        width: auto;
+        height: 24px;
+        font-size: 16px;
+    }
+
+    @media(hover: hover){
+        .update-message > button:hover {
+            outline: 2px solid var(--button-color);
+        }
+    }
+
+    .update-message > button:focus {
+        outline: 2px solid var(--button-color);
+    }
+
+    .reload {
+        margin-left: auto;
+    }
+
+    .later {
+        margin-left: 16px;
     }
 </style>

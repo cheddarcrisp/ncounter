@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const LicensePlugin = require('webpack-license-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -11,11 +10,14 @@ const year = now.getFullYear().toString();
 const releaseDate = now.getFullYear() + "-" + (now.getMonth() + 1).toString().padStart(2, '0') + "-" + now.getDate().toString().padStart(2, '0');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: {
+        index: './src/index.js',
+        sw: './src/sw.js'
+    },
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            title: 'NCounter',
+            excludeChunks: ['sw'],
             template: 'src/index.html'
         }),
         new GoogleFontsPlugin({
@@ -23,10 +25,6 @@ module.exports = {
                 { family: "Material Icons" }
             ],
             local: false
-        }),
-        new ServiceWorkerWebpackPlugin({
-            entry: path.join(__dirname, 'src/sw.js'),
-            publicPath: './'
         }),
         new LicensePlugin(),
         new CopyWebpackPlugin([
@@ -48,7 +46,7 @@ module.exports = {
         ])
     ],
     output: {
-        filename: 'index.js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'dist')
     },
     module: {
