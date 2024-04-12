@@ -1,6 +1,6 @@
 import { set as setDb, get as getDb } from 'idb-keyval';
 import { writable } from 'svelte/store';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 
 function createCounters(){
     const {subscribe,set,update:updateVal} = writable([]);
