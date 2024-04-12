@@ -3,8 +3,6 @@
         <h1>{ counter.title }</h1>
         <button class="close" on:click={ close }><span class="material-symbols-outlined">close</span></button>
     </header>
-    <canvas class="chart-container" bind:this={ chartEl } width="{ window.outerWidth }" height="250">
-    </canvas>
     <div class="table-container">
         <table class="history">
             <thead>
@@ -27,7 +25,6 @@
 <script>
 import { createEventDispatcher } from 'svelte';
 import { counters } from './db.js';
-import Chart from 'chart.js';
 
 const dispatch = createEventDispatcher();
 
@@ -47,76 +44,8 @@ $: history = counter.history.map(x => {
         value: x.value
     }
 });
-$: dataset = counter.history.reduce((acc, x) => {
-    return {
-        labels: [...acc.labels, x.time],
-        datasets: [
-            {
-                ...acc.datasets[0],
-                data: [...acc.datasets[0].data, x.value]
-            }
-        ]
-    }
-}, {
-    labels: [],
-    datasets: [
-        {
-            borderColor: darkMode ? 'rgba(255, 255, 255, 0.25)' : undefined,
-            backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.25)' : undefined,
-            lineTension: 0.1,
-            data: []
-        }
-    ]
-});
 
 export let counterId;
-
-let chartEl;
-
-const themeMatch = window.matchMedia('(prefers-color-scheme: dark)');
-let darkMode = themeMatch.matches;
-themeMatch.addListener((e) => {
-    darkMode = e.matches;
-});
-
-$: {
-    if(chartEl){
-        const theme = darkMode ?
-            {
-                gridLines: {
-                    color: 'rgba(255, 255, 255, 0.1)',
-                    zeroLineColor: 'rgba(255, 255, 255, 0.25)'
-                },
-                ticks: {
-                    fontColor: '#FFFFFF'
-                }
-            } :
-            {} //Use defaults for light mode;
-
-        new Chart(chartEl, {
-            type: 'line',
-            data: dataset,
-            options: {
-                scales: {
-                    xAxes: [
-                        {
-                            ...theme,
-                            type: 'time'
-                        }
-                    ],
-                    yAxes: [
-                        {
-                            ...theme
-                        }
-                    ]
-                },
-                legend: {
-                    display: false
-                }
-            }
-        });
-    }
-}
 
 function close(){
     dispatch('close');

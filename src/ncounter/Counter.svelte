@@ -40,9 +40,13 @@
         </form>
     </div>
     {/if}
+    {#if showHistory}
+    <History { counterId } on:close={ () => { showHistory = false; } }></History>
+    {/if}
 </div>
 <script>
 import MyProgress from './MyProgress.svelte';
+import History from './History.svelte';
 import { counters } from './db.js';
 
 export let counterId;
