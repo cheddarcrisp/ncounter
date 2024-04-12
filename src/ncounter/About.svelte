@@ -1,5 +1,5 @@
 <div class="about">
-    <button class="close" on:click={ () => { dispatch('close'); } }><i class="material-icons">close</i></button>
+    <button class="close" on:click={ () => { dispatch('close'); } }><span class="material-symbols-outlined">close</span></button>
     <header>
         <h1>NCounter</h1>
         <h2>Release |BUILD_DATE|</h2>

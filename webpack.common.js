@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const LicensePlugin = require('webpack-license-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -20,30 +19,26 @@ module.exports = {
             excludeChunks: ['sw'],
             template: 'src/index.html'
         }),
-        new GoogleFontsPlugin({
-            fonts: [
-                { family: "Material Icons" }
-            ],
-            local: false
-        }),
         new LicensePlugin(),
-        new CopyWebpackPlugin([
-            {
-                from: 'src/icon/*.png', to: 'icons', flatten: true
-            },
-            {
-                from: 'src/icon/safari-pinned-tab.svg', to: 'icons'
-            },
-            {
-                from: 'src/icon/favicon.ico', to: 'icons'
-            },
-            {
-                from: 'src/icon/site.webmanifest', to: 'icons'
-            },
-            {
-                from: 'src/icon/browserconfig.xml', to: 'icons'
-            }
-        ])
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: 'src/icon/*.png', to: path.resolve(__dirname, 'dist', 'icons', '[name][ext]')
+                },
+                {
+                    from: 'src/icon/safari-pinned-tab.svg', to: 'icons'
+                },
+                {
+                    from: 'src/icon/favicon.ico', to: 'icons'
+                },
+                {
+                    from: 'src/icon/site.webmanifest', to: 'icons'
+                },
+                {
+                    from: 'src/icon/browserconfig.xml', to: 'icons'
+                }
+            ]
+        })
     ],
     output: {
         filename: '[name].js',
@@ -51,13 +46,6 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.html$/,
-                loader: 'html-loader',
-                options: {
-                    interpolate: true
-                }
-            },
             {
                 test: /\.svelte$/,
                 exclude: /node_modules/,
@@ -86,5 +74,8 @@ module.exports = {
                 loader: 'file-loader'
             }
         ]
+    },
+    resolve: {
+      conditionNames: ['svelte']  
     },
 }

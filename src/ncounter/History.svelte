@@ -1,7 +1,7 @@
 <div class="history-container">
     <header>
         <h1>{ counter.title }</h1>
-        <button class="close" on:click={ close }><i class="material-icons">close</i></button>
+        <button class="close" on:click={ close }><span class="material-symbols-outlined">close</span></button>
     </header>
     <canvas class="chart-container" bind:this={ chartEl } width="{ window.outerWidth }" height="250">
     </canvas>

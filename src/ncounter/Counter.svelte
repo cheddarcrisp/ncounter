@@ -5,14 +5,14 @@
     <MyProgress value={ counter.value } max={ counter.max }></MyProgress>
     {/if}
     <div class="controls">
-        <button on:click={ () => { showIncrement = true; } }><i class="material-icons">add</i></button>
-        <button on:click={ () => { showSet = true; } }><i class="material-icons">edit</i></button>
-        <button class="reset" on:click={ reset }><i class="material-icons">replay</i></button>
+        <button on:click={ () => { showIncrement = true; } }><span class="material-symbols-outlined">add</span></button>
+        <button on:click={ () => { showSet = true; } }><span class="material-symbols-outlined">edit</span></button>
+        <button class="reset" on:click={ reset }><span class="material-symbols-outlined">replay</span></button>
         {#if counter.saveHistory}
-        <button class="history" on:click={ () => { showHistory = true; } }><i class="material-icons">show_chart</i></button>
+        <button class="history" on:click={ () => { showHistory = true; } }><span class="material-symbols-outlined">show_chart</span></button>
         {/if}
-        <button on:click={ startEdit }><i class="material-icons">settings</i></button>
-        <button on:click={ remove }><i class="material-icons">delete</i></button>
+        <button on:click={ startEdit }><span class="material-symbols-outlined">settings</span></button>
+        <button on:click={ remove }><span class="material-symbols-outlined">delete</span></button>
     </div>
     {#if showValueDialog}
     <div class="dialog">
@@ -40,14 +40,9 @@
         </form>
     </div>
     {/if}
-    {#if showHistory}
-    <History { counterId } on:close={ () => { showHistory = false; } }></History>
-    {/if}
 </div>
 <script>
 import MyProgress from './MyProgress.svelte';
-import History from './History.svelte';
-import { tick } from 'svelte';
 import { counters } from './db.js';
 
 export let counterId;

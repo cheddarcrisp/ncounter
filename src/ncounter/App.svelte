@@ -10,10 +10,10 @@
     </div>
     {/if}
     <div class="tool-bar">
-        <button class="add" on:click="{ showAdd }"><i class="material-icons">add</i></button>
+        <button class="add" on:click="{ showAdd }"><span class="material-symbols-outlined">add</span></button>
         {#if updateAvailable}<button class="update"
             class:animate="{!ignoreUpdate}"
-            on:click={() => { ignoreUpdate = true; showUpdateMessage = !showUpdateMessage; }}><i class="material-icons">arrow_upward</i></button>{/if}
+            on:click={() => { ignoreUpdate = true; showUpdateMessage = !showUpdateMessage; }}><span class="material-symbols-outlined">arrow_upward</span></button>{/if}
         <button class="about" on:click="{ () => { showAbout = true; } }">?</button>
     </div>
 </div>
